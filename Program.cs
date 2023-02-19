@@ -1,4 +1,36 @@
-﻿Player computer = new Player("Queen Bee");
+﻿static void GetStarted(string answer, Player user, bool playing) {
+    if(answer == "yes" || answer == "Yes" || answer == "y" || answer == "Y") {
+        Console.WriteLine($"Wonderful {user.Name} lets go!");
+    }
+    else {
+        Console.WriteLine($"No hard feelings {user.Name}, thank you for at least stopping by");
+        playing = false;
+    }
+}
+static string NewGarden(int newAnswer) {
+    string userGardenType = "";
+    if(newAnswer == 1) {
+        userGardenType = "Edible";
+    }
+    else if(newAnswer == 2) {
+        userGardenType = "Decorative";
+    }
+    else if(newAnswer == 3) {
+        userGardenType = "Ground Cover";
+    }
+    else {
+        userGardenType = "bad";
+    }
+    return userGardenType;
+}
+
+static int TheName() {
+    Random randName = new Random();
+    int id = randName.Next(1,50);
+    return id;
+}
+
+Player computer = new Player("Queen Bee");
 
 bool playing = true;
 
@@ -9,36 +41,29 @@ while(playing) {
     Player user = new Player(Console.ReadLine());
     Console.WriteLine($"Welcome {user.Name}, shall we get started on your adventure?");
     string answer = Console.ReadLine();
-    if(answer == "yes" || answer == "Yes" || answer == "y" || answer == "Y") {
-        Console.WriteLine($"Wonderful {user.Name} lets go!");
-    }
-    else {
-        Console.WriteLine($"No hard feelings {user.Name}, thank you for at least stopping by");
-        playing = false;
-    }
+    GetStarted(answer, user, playing);
     Console.WriteLine("In order to begin lets create a garden.");
     Console.WriteLine("What would you like to name your garden?");
     string tempName = Console.ReadLine();
     Console.WriteLine($"{tempName}, nice {user.Name}.  Now lets figure out what type of garden you want");
     Console.WriteLine("Please chose from the following types: 1. Edible Garden, 2. Decorative Garden, or 3. Ground Cover Garden");
     int newAnswer = Convert.ToInt32(Console.ReadLine());
+    string type = NewGarden(newAnswer);
+    if(type == "bad") {
+        Console.WriteLine($"I am sorry {user.Name} but that was not an option at this time I must end the game");
+        playing = false;
+    }
+    Garden userGarden = new Garden(tempName, type, newAnswer*5, newAnswer);
+    userGarden.PrintGarden();
+    Console.WriteLine($"Now that you have a garden you should add some plants.  So since your garden is a {type}, lets at your first {type} plant please give us the name of the {type} plant");
+    string newPlant = Console.ReadLine();
+    
     if(newAnswer == 1) {
-        Garden newGarden = new Garden(tempName, "Edible", 5);
-        Console.WriteLine($"Congrats {user.Name} here is the information on your new Garden");
-        newGarden.PrintGarden();
+
     }
-    else if(newAnswer == 2) {
-        Garden newGarden = new Garden(tempName, "Decorative", 15);
-        Console.WriteLine($"Congrats {user.Name} here is the information on your new Garden");
-        newGarden.PrintGarden();
-    }
-    else if(newAnswer == 3) {
-        Garden newGarden = new Garden(tempName, "Ground Cover", 10);
-        Console.WriteLine($"Congrats {user.Name} here is the information on your new Garden");
-        newGarden.PrintGarden();
-    }
-    else {
-        Console.WriteLine($"Sorry {user.Name}, that entry was not an option for now I {computer.Name} will have to say goodbye, please to come back later");
-    }
+
+
+
+
     playing = false;
 }
